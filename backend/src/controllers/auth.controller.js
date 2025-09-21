@@ -4,7 +4,10 @@ import User from "../models/User.js";
 import { generateToken } from "../lib/utils.js";
 
 export const signup = async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { fullName, email: emailInput, password } = req.body;
+  const email = String(emailInput || "")
+    .toLowerCase()
+    .trim();
 
   try {
     if (!fullName || !email || !password) {
