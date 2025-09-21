@@ -4,11 +4,14 @@ import path from "path";
 
 import authRouters from "./routes/auth.route.js";
 import messageRouters from "./routes/message.route.js";
+import { connectDB } from "./lib/db.js";
 
 const app = express();
 const __dirname = path.resolve();
 
 const PORT = process.env.PORT;
+
+app.use(express.json()); // req.body
 
 app.use("/api/auth", authRouters);
 app.use("/api/messages", messageRouters);
@@ -19,10 +22,11 @@ if (process.env.NODE_ENV === "production") {
 
   app.get(/.*/, (_, res) => {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+    //   res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
   });
-  // app.get(/.*/, (_, res) => {
-  //   res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-  // });
 }
 
-app.listen(PORT, () => console.log("Server is running"));
+app.listen(PORT, () => {
+  console.log("Server is running");
+  connectDB();
+});
