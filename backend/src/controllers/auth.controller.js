@@ -1,7 +1,10 @@
 import bcrypt from "bcryptjs";
+// import "dotenv/config";
+import { ENV } from "../lib/env.js";
 
 import User from "../models/User.js";
 import { generateToken } from "../lib/utils.js";
+import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 
 export const signup = async (req, res) => {
   const { fullName, email: emailInput, password } = req.body;
@@ -39,21 +42,31 @@ export const signup = async (req, res) => {
       password: hashedPassword,
     });
 
-    if (newUser)
-      //   generateToken(newUser._id, res);
-      await newUser.save();
+    if (newUser) {
+      const savedUser = await newUser.save();
+      // generateToken(savedUser._id, res);
 
-    res.status(201).json({ message: "User created successfully" });
-    // res.status(201).json({
-    //   _id: newUser._id,
-    //   fullName: newUser.fullName,
-    //   email: newUser.email,
-    //   profilePic: newUser.profilePic,
-    // });
+      res.status(201).json({ message: "User created successfully" });
 
-    // else {
-    //   res.status(400).json({ message: "Invalid user data" });
-    // }
+      // res.status(201).json({
+      //   _id: newUser._id,
+      //   fullName: newUser.fullName,
+      //   email: newUser.email,
+      //   profilePic: newUser.profilePic,
+      // });
+
+      try {
+        await sendWelcomeEmail(
+          savedUser.email,
+          savedUser.fullName,
+          ENV.CLIENT_URL
+        );
+      } catch (error) {
+        console.error("Failed to send welcome email:", error);
+      }
+    } else {
+      res.status(400).json({ message: "Invalid user data" });
+    }
   } catch (error) {
     console.log("Error in signup controller:", error);
     res.status(500).json({ message: "Failed to created User " });
@@ -62,9 +75,24 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  res.send("Login endpoint");
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400), json({ message: "Invalid Credentials" });
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect)
+      return res.status(400), json({ message: "Invalid Credentials" });
+
+    generateToken(user._id, res);
+    res.status(201).json({ message: "login successfully" });
+  } catch (error) {
+    console.log("Error in login controller", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
-export const logout = async (req, res) => {
-  res.send("logout endpoint");
+export const logout = (_, res) => {
+  res.clearCookie("jwt").status(200).json({ message: "Logout Successfull" });
 };
