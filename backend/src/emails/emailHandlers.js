@@ -18,7 +18,7 @@
 // };
 
 import { resendClient, sender } from "../lib/resend.js";
-import createWelcomeEmailTemplate from "../emails/emailTemplates.js";
+import createWelcomeEmailTemplate from "./emailTemplates.js";
 
 const isEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((e || "").trim());
 

@@ -1,5 +1,5 @@
 import express from "express";
-// import "dotenv/config";
+import cookieParser from "cookie-parser";
 import path from "path";
 
 import { ENV } from "./lib/env.js";
@@ -13,6 +13,7 @@ const __dirname = path.resolve();
 const PORT = ENV.PORT;
 
 app.use(express.json()); // req.body
+app.use(cookieParser());
 
 app.use("/api/auth", authRouters);
 app.use("/api/messages", messageRouters);
