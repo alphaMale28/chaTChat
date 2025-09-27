@@ -3,14 +3,14 @@ import jwt from "jsonwebtoken";
 import { ENV } from "./env.js";
 
 export const generateToken = (userId, res) => {
-  const { JWT_SECRET_KEY } = ENV;
-  if (!JWT_SECRET_KEY) {
-    throw new Error("JWT_SECRET_KEY is not configured");
+  const { JWT_SECRET } = ENV;
+  if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET is not configured");
   }
 
   const age = 1000 * 60 * 60 * 24 * 7;
 
-  const token = jwt.sign({ userId }, JWT_SECRET_KEY, {
+  const token = jwt.sign({ userId }, JWT_SECRET, {
     expiresIn: "7d",
   });
 
