@@ -76,18 +76,20 @@ export const sendMessage = async (req, res) => {
     if (!text && !image) {
       return res
         .status(400)
-        .json({ error: "Message must contain text or image" });
+        .json({ message: "Message must contain text or image." });
     }
 
     // Prevent self-messaging
-    if (senderId.toString() === receiverId.toString()) {
-      return res.status(400).json({ error: "Cannot send message to yourself" });
+    if (senderId.equals(receiverId)) {
+      return res
+        .status(400)
+        .json({ message: "Cannot send messages to yourself." });
     }
 
     // Verify receiver exists
-    const receiver = await User.findById(receiverId);
-    if (!receiver) {
-      return res.status(404).json({ error: "Receiver not found" });
+    const receiverExists = await User.exists({ _id: receiverId });
+    if (!receiverExists) {
+      return res.status(404).json({ message: "Receiver not found." });
     }
 
     let imageUrl;
@@ -111,9 +113,9 @@ export const sendMessage = async (req, res) => {
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
 
-    res.status(201).json({ newMessage });
+    res.status(201).json(newMessage);
   } catch (error) {
     console.log("Error in sendMessage controller:", error.message);
-    res.status(500).json({ error: "internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
