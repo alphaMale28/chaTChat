@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { format } from "timeago.js";
+
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 import NoChatHistoryPlaceholder from "./NoChatHistoryPlaceholder";
