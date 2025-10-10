@@ -11,7 +11,7 @@ export const socketAuthMiddleware = async (socket, next) => {
       ?.split("=")[1];
 
     if (!token) {
-      console.log("Socket connecttion rejected: No token provided");
+      console.log("Socket connection rejected: No token provided");
       return next(new Error("Unauthorized - No Token Provided"));
     }
 

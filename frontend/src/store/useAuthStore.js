@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import { axiosInstance } from "../lib/axios";
 
 const BASE_URL =
-  import.meta.env.MODE === "development" ? "http://localhost:3000 " : "/";
+  import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -115,6 +115,10 @@ export const useAuthStore = create((set, get) => ({
   },
 
   disconnectSocket: () => {
-    if (get().socket?.connected()) get().socket.disconnect();
+    // if (get().socket?.connected()) get().socket.disconnect();
+    const socket = get().socket;
+    if (socket?.connected) {
+      socket.disconnect();
+    }
   },
 }));
