@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { format } from "timeago.js";
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 import NoChatHistoryPlaceholder from "./NoChatHistoryPlaceholder";
@@ -66,7 +67,7 @@ function ChatPreviewContainer() {
                     hour: "2-digit",
                     minute: "2-digit",
                   })} */}
-                  {new Date(msg.createdAt).toISOString().slice(11, 16)}
+                  {format(msg.createdAt)}
                 </p>
               </div>
             </div>
