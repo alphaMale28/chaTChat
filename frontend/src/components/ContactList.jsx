@@ -35,7 +35,7 @@ function ContactList() {
                 />
               </div>
             </div>
-            <h4 className="trxt-slate-200 font-medium">{contact.fullName}</h4>
+            <h4 className="text-[#8686AC] font-medium">{contact.fullName}</h4>
           </div>
         </div>
       ))}

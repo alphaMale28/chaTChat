@@ -36,7 +36,7 @@ function ChatsList() {
                 />
               </div>
             </div>
-            <h4 className="text-slate-200 font-medium truncate">
+            <h4 className="text-[#8686AC] font-medium truncate">
               {chat.fullName}
             </h4>
           </div>
