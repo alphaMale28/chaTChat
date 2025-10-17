@@ -94,13 +94,13 @@ export const login = async (req, res) => {
     }
 
     generateToken(user._id, res);
-    res.status(201).json({ message: "login successfully" });
-    // res.status(200).json({
-    //   _id: user._id,
-    //   fullName: user.fullName,
-    //   email: user.email,
-    //   profilePic: user.profilePic,
-    // });
+    // res.status(201).json({ message: "login successfully" });
+    res.status(200).json({
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      profilePic: user.profilePic,
+    });
   } catch (error) {
     console.error("Error in login controller", error);
     res.status(500).json({ message: "Internal server error" });

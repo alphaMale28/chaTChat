@@ -1,4 +1,4 @@
-import { XIcon } from "lucide-react";
+import { PhoneIcon, VideoIcon, XIcon } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
 import { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
@@ -31,17 +31,26 @@ function ChatHeader() {
           </div>
         </div>
         <div>
-          <h3 className="text-slate-200 font-medium">
+          <h3 className="text-[#8686AC] font-medium">
             {selectedUser.fullName}
           </h3>
-          <p className="text-slate-400 text-sm">
+          <p className="text-[#7b7b9e] text-sm">
             {isOnline ? "Online" : "Offline"}
           </p>
         </div>
       </div>
       <div className="flex justify-end gap-3">
         {/* TODO VIDEO CALL */}
-        {/* <div>videocall</div> */}
+        <div>
+          <button>
+            <VideoIcon />
+          </button>
+        </div>
+        <div>
+          <button>
+            <PhoneIcon />
+          </button>
+        </div>
         <button onClick={() => setSelectedUser(null)}>
           <XIcon className="w-5 h-5 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer" />
         </button>
